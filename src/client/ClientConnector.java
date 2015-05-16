@@ -56,7 +56,11 @@ public class ClientConnector {
             client.perform(action);
         }
     }
-    public void send(){
-
+    public void send(ScromAction action){
+        try {
+            oos.writeObject(action);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

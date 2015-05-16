@@ -10,7 +10,11 @@ import com.scrom.model.action.ServerAction;
  * Created by jeppe on 12-03-15.
  */
 public class Client {
+    ClientConnector con;
     SCROM game;
+    public Client(){
+        con = new ClientConnector(this);
+    }
     //Perform is called on an instance of ScromAction to change the game state in accordance to it.
     public void perform(ScromAction action){
         assert action != null;
