@@ -2,9 +2,7 @@ package client;
 
 import com.scrom.model.action.ScromAction;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -18,11 +16,13 @@ public class ClientConnector {
     Socket channel;
     ObjectInputStream ois;
     ObjectOutputStream oos;
+    private BufferedReader in;
+    private PrintWriter out;
     public ClientConnector(Client c){
         client = c;
         connect();
         receive();
-        disconnect();
+        //disconnect();
     }
 
     private void disconnect() {
@@ -38,6 +38,7 @@ public class ClientConnector {
             channel = new Socket(SERVER_ADDRESS, SERVER_PORT);
             ois = new ObjectInputStream(channel.getInputStream());
             oos = new ObjectOutputStream(channel.getOutputStream());
+
         } catch (Exception e){
             System.out.println("OH NO!");
         }
@@ -47,6 +48,7 @@ public class ClientConnector {
         while(listening){
             ScromAction action = null;
             try {
+                System.out.println(in.readLine());
                 action = (ScromAction)ois.readObject();
             } catch (IOException e) {
                 e.printStackTrace();

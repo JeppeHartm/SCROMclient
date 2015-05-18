@@ -5,6 +5,7 @@ import com.scrom.model.SCROM;
 import com.scrom.model.action.PlayerAction;
 import com.scrom.model.action.ScromAction;
 import com.scrom.model.action.ServerAction;
+import com.scrom.model.card.Card;
 
 /**
  * Created by jeppe on 12-03-15.
@@ -12,6 +13,7 @@ import com.scrom.model.action.ServerAction;
 public class Client {
     ClientConnector con;
     SCROM game;
+
     public Client(){
         con = new ClientConnector(this);
     }
@@ -23,13 +25,17 @@ public class Client {
             switch(pa.getActionType()){
                 case CardPlayed:
                     Player player = game.getPlayer(pa.getPlayerId());
-                    player.playCard(pa.getCard());
+                    player.playCard((Card)pa.getSubject());
+                    break;
             }
         }else if(action instanceof ServerAction){
             ServerAction sa = (ServerAction)action;
             switch(sa.getActionType()){
-
+                case Initialize:
+                    game = (SCROM)sa.getSubject();
+                    break;
             }
         }
     }
+
 }
