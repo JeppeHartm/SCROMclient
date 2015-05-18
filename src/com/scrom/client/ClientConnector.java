@@ -1,4 +1,4 @@
-package client;
+package com.scrom.client;
 
 import com.scrom.model.action.ScromAction;
 
@@ -18,9 +18,9 @@ public class ClientConnector {
     Socket channel;
     ObjectInputStream ois;
     ObjectOutputStream oos;
-    public ClientConnector(Client c){
+    public ClientConnector(Client c, String name){
         client = c;
-        connect();
+        connect(name);
         receive();
         disconnect();
     }
@@ -33,11 +33,12 @@ public class ClientConnector {
         }
     }
 
-    private void connect(){
+    private void connect(String name){
         try {
             channel = new Socket(SERVER_ADDRESS, SERVER_PORT);
             ois = new ObjectInputStream(channel.getInputStream());
             oos = new ObjectOutputStream(channel.getOutputStream());
+            oos.writeBytes(name);
         } catch (Exception e){
             System.out.println("OH NO!");
         }
@@ -55,6 +56,9 @@ public class ClientConnector {
             }
             client.perform(action);
         }
+    }
+    public void stop(){
+        listening = false;
     }
     public void send(ScromAction action){
         try {
