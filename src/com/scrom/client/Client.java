@@ -5,6 +5,8 @@ import com.scrom.model.SCROM;
 import com.scrom.model.action.PlayerAction;
 import com.scrom.model.action.ScromAction;
 import com.scrom.model.action.ServerAction;
+import com.scrom.model.card.Card;
+import com.scrom.model.card.event.EventCard;
 
 /**
  * Created by jeppe on 12-03-15.
@@ -39,6 +41,16 @@ public class Client {
             switch(sa.getActionType()){
                 case Initialize:
                     game = (SCROM)sa.getSubject();
+                    break;
+                case NewTurn:
+                    game.incrementTurn();
+                    game.setGameState(SCROM.GameState.waiting);
+                    break;
+                case CardDealt:
+                    String id = sa.getPlayerId();
+                    EventCard ec = (EventCard) sa.getSubject();
+                    game.setCurrent(game.getPlayer(id));
+                    game.setCurrentCard(ec);
                     break;
             }
         }

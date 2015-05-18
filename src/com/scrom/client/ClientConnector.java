@@ -18,7 +18,7 @@ public class ClientConnector {
     Socket channel;
     ObjectInputStream ois;
     ObjectOutputStream oos;
-    public ClientConnector(Client c){
+    public ClientConnector(Client c,String name){
         client = c;
         connect(name);
         receive();
@@ -48,7 +48,7 @@ public class ClientConnector {
         while(listening){
             ScromAction action = null;
             try {
-                System.out.println(in.readLine());
+
                 action = (ScromAction)ois.readObject();
             } catch (IOException e) {
                 e.printStackTrace();
