@@ -25,6 +25,9 @@ public class Client {
     public SCROM.GameState getState(){
         return game.getState();
     }
+    public void end(){
+        con.stop();
+    }
     //Perform is called on an instance of ScromAction to change the game state in accordance to it.
     public void perform(ScromAction action){
         assert action != null;
